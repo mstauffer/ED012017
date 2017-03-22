@@ -23,29 +23,29 @@ int main(){
 	scanf("%d", &n);
 
 	p = (int **)malloc (m*sizeof(int*));
-	for (int i = 0; i < m; ++i){
+	for (i = 0; i < m; ++i){
 		p[i] = (int*)malloc(n*sizeof(int));
-		for (int j = 0; j < n; ++j){
+		for (j = 0; j < n; ++j){
 			printf("Informe o elemento da linha %d e coluna %d: \n", i+1, j+1);
 			scanf("%d", &p[i][j]);
 		}
 	}
 	printf("Sua matriz eh:\n");
-	for (int i = 0; i < m; ++i){
-		for (int j = 0; j < n; ++j){
+	for (i = 0; i < m; ++i){
+		for (j = 0; j < n; ++j){
 			printf("%d\t", p[i][j]);
 		}
 		printf("\n");
 	}
 
-	for (int i = 0; i < m; ++i){
+	for (i = 0; i < m; ++i){
 		free(p[i]);
 	}
 	free(p);/*
 	q = malloc (n*sizeof(int));
 
-	for (int i = 0; i < m; ++i){
-		for (int j = 0; j < n; ++i){
+	for (i = 0; i < m; ++i){
+		for (j = 0; j < n; ++i){
 			printf("Informe o elemento da linha %d e coluna %d: \n", m+1, n+1);
 			scanf("%d", )
 		}
