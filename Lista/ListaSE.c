@@ -74,7 +74,7 @@ void LSE_Buscar(Lista* l, int v){
 
 	i = 0;
 	j = 0;
-	for(p = l->prim; p!=NULL || j!=1; p = p->prox){
+	for(p = l->prim; p!=NULL && j!=1; p = p->prox){
 		i++;
 		if(p->info == v){
 			printf("Valor %d encontrado no elemento de posiçao %d.\n", v, i);
