@@ -43,43 +43,6 @@ void Inserir(Inicio* l){
 	l->prim = novo;
 }
 
-void ImprimirCTT(Inicio* l){
-	Agenda* p;
-	int j;
-	char validador;
-	char nomectt[30];
-
-	printf("Informe o nome do contato que deseja visualizar:\n");
-	scanf("%[^\n]s%*c", nomectt);
-	j = 0;
-	for(p = l->prim; p!=NULL && j!= 1; p = p->prox){
-		if(p->nome == nomectt){
-			printf("\t\tCONTATO\t\t\n");
-			printf("\t\t%s\t\t\n", p->nome);
-			printf("\t\t%s\t\t\n", p->email);
-			printf("\t\t%s\t\t\n", p->telefone);
-		}
-		j = 1;
-	}
-	if(j==0){
-		printf("O contato buscado nao existe. Deseja inclui-lo? (S/N)\n");
-		scanf("%c", &validador);
-		if(validador == 'S' || validador == 's'){
-			Inserir(l);
-		}
-	}
-}
-
-void ImprimirTudo(Inicio* l){
-	Agenda* p;
-
-	for(p = l->prim; p != NULL; p = p->prox){
-		printf("nome: %s\n", p->nome);
-		printf("email: %s\n", p->email);
-		printf("telefone: %s\n", p->telefone);
-	}	
-}
-
 void Ordenar(Inicio* l){
 	Agenda* p;
 	Agenda* aux;
@@ -138,23 +101,67 @@ void Ordenar(Inicio* l){
 	}/*Fim Bloco Else (qual != 1)*/
 }
 
+void ImprimirTudo(Inicio* l){
+	Agenda* p;
+
+	printf("\t\tCONTATOS\t\t\n");
+	for(p = l->prim; p != NULL; p = p->prox){
+		printf("Nome: %s\n", p->nome);
+		printf("Email: %s\n", p->email);
+		printf("Telefone: %s\n", p->telefone);
+		printf("\n");
+	}	
+}
+
+void ImprimirCTT(Inicio* l){
+	Agenda* p;
+	int j;
+	char validador;
+	char nomectt[30];
+
+	getchar();
+	printf("Informe o nome do contato que deseja visualizar:\n");
+	scanf("%[^\n]s%*c", nomectt);
+	j = 0;
+	for(p = l->prim; p!=NULL && j!= 1; p = p->prox){
+		if(strcmp(p->nome, nomectt) == 0){
+			printf("\t\tCONTATO\t\t\n");
+			printf("\t\t%s\t\t\n", p->nome);
+			printf("\t\t%s\t\t\n", p->email);
+			printf("\t\t%s\t\t\n", p->telefone);
+		}
+		j = 1;
+	}
+	if(j==0){
+		printf("O contato buscado nao existe. Deseja inclui-lo? (S/N)\n");
+		scanf("%c", &validador);
+		if(validador == 'S' || validador == 's'){
+			Inserir(l);
+		}
+	}
+}
+
 void Editar(Inicio* l){
 	Agenda* p;
 	char s[30], nvnome[30], nvemail[40], nvtelefone[10];
 	char keep;
 	int j;
 
+	getchar();
 	printf("Digite o nome do contato que deseja editar: \n");
 	scanf("%[^\n]s%*c", s);
 	j = 1;
 	for(p = l->prim; p!=NULL && j!=0; p = p->prox){
-		if(s == p->nome){
+		if(strcmp(s, p->nome) == 0){
+			getchar();
 			printf("Digite o novo nome do contato:\n");
 			scanf("%[^\n]s%*c", nvnome);
 			strcpy(p->nome, nvnome);
+			getchar();
 			printf("Digite o novo email do contato:\n");
 			scanf("%[^\n]s%*c", nvemail);
 			strcpy(p->email, nvemail);
+			getchar();
 			printf("Digite o novo telefone do contato:\n");
 			scanf("%[^\n]s%*c", nvtelefone);
 			strcpy(p->telefone, nvtelefone);
@@ -174,9 +181,10 @@ void Remover(Inicio* l){
 	char keep;
 	char nomectt[30];
 
+	getchar();
 	printf("Informe o nome do contato que deseja remover:\n");
 	scanf("%[^\n]s%*c", nomectt);
-	while(p != NULL && p->nome != nomectt){
+	while(p != NULL && strcmp(p->nome, nomectt) != 0){
 		ant = p;
 		p = p->prox;
 	}
@@ -199,7 +207,7 @@ void Remover(Inicio* l){
 	printf("Deseja remover mais algum elemento?(S/N)\n");
 	scanf("%c", &keep);
 	if(keep == 'S' || keep == 's'){
-		Editar(l);
+		Remover(l);
 	}
 }
 
@@ -208,13 +216,17 @@ int main(){
 
 	Inicio* l = CriarLista();
 	do{
-		printf("\t\t\tAGENDA DE CONTATOS\t\t\t\n");
+		printf("\t\tAGENDA DE CONTATOS\t\t\n");
 		printf("Informe a operaçao que deseja realizar:\n");
 		printf("1 - Inserir novo contato, 2 - Ordenar Lista de Contatos,\n");
 		printf("3 - Imprimir toda Lista de Contatos, 4 - Imprimir Contato\n");
 		printf("especifico, 5 - Editar um contato e 6 - Remover contato.\n");
 		printf("Caso deseja terminar a execuçao, digite 7.\n");
 		scanf("%d", &keep);
+		while(keep < 1 || keep > 7){
+			printf("Informe uma opçao valida!\n");
+			scanf("%d", &keep);
+		}
 		switch(keep){
 			case 1:
 				Inserir(l);
@@ -234,7 +246,7 @@ int main(){
 			case 6:
 				Remover(l);
 		}
-	}while(keep != 7);
+	} while(keep != 7);
 
 
 	return 0;
