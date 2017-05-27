@@ -5,11 +5,11 @@
 typedef struct inicio Inicio;
 typedef struct agenda Agenda;
 
-struct Inicio{
+struct inicio{
 	Agenda* prim;
 };
 
-struct Agenda{
+struct agenda{
 	char nome[30];
 	char email[40];
 	char telefone[10];
@@ -24,13 +24,22 @@ Inicio* CriarLista(void){
 
 void Inserir(Inicio* l){
 	Agenda* novo = (Agenda*) malloc(sizeof(Agenda));
-	printf("Insira o nome do contato: \n");
-	scanf("%[^\n]s%*c", novo->nome);
+	char c;
+    
+    while(c != '\n'){
+        c = getchar();
+        printf("%c", c);
+        printf("Insira o nome do contato: \n");
+        scanf("%[^\n]s%*c", novo->nome);
+    }
+    getchar();
 	printf("Insira o endereço eletronico do contato: \n");
 	scanf("%[^\n]s%*c", novo->email);
-	printf("Insira o telefone do contato: \n");
+	getchar();
+    printf("Insira o telefone do contato: \n");
 	scanf("%[^\n]s%*c", novo->telefone);
-	novo->prox = l->prim;
+	getchar();
+    novo->prox = l->prim;
 	l->prim = novo;
 }
 
@@ -65,9 +74,9 @@ void ImprimirTudo(Inicio* l){
 	Agenda* p;
 
 	for(p = l->prim; p != NULL; p = p->prox){
-		printf("nome: \n", p->nome);
-		printf("email: \n", p->email);
-		printf("telefone: \n", p->telefone);
+		printf("nome: %s\n", p->nome);
+		printf("email: %s\n", p->email);
+		printf("telefone: %s\n", p->telefone);
 	}	
 }
 
@@ -142,13 +151,13 @@ void Editar(Inicio* l){
 		if(s == p->nome){
 			printf("Digite o novo nome do contato:\n");
 			scanf("%[^\n]s%*c", nvnome);
-			p->nome = nvnome;
+			strcpy(p->nome, nvnome);
 			printf("Digite o novo email do contato:\n");
 			scanf("%[^\n]s%*c", nvemail);
-			p->email = nvemail;
+			strcpy(p->email, nvemail);
 			printf("Digite o novo telefone do contato:\n");
 			scanf("%[^\n]s%*c", nvtelefone);
-			p->telefone = nvtelefone;
+			strcpy(p->telefone, nvtelefone);
 			j = 0;
 		}
 	}
