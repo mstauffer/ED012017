@@ -1,6 +1,23 @@
+/*
+Universidade de Brasilia
+Instituto de Ciencias Exatas
+Departamento de Ciencia da Computacao
+Estrutura de Dados 1/2017
+Alunos: Matheus Stauffer Viana de Oliveira e Rafael Frade Leão
+Matricula: 16/0071852 e 15/0145527
+Turma: B
+Versão do compilador: gcc (SUSE Linux) 6.1.1 20160707 [gcc-6-branch revision 238088]
+Copyright (C) 2016 Free Software Foundation, Inc.
+*/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+#ifdef _WIN32              /* DEFINE AS CONFIGURACOES         */
+    #define CLEAR "cls"    /* PARA LIMPAR A TELA PRA WINDOWS  */
+#else                      /* OU                              */
+    #define CLEAR "clear"  /* LINUX                           */
+#endif
 
 typedef struct inicio Inicio;
 typedef struct agenda Agenda;
@@ -25,7 +42,7 @@ Inicio* CriarLista(void){
 void Inserir(Inicio* l){
 	Agenda* novo = (Agenda*) malloc(sizeof(Agenda));
 	char c;
-    
+
     while(c != '\n'){
         c = getchar();
         printf("%c", c);
@@ -55,6 +72,7 @@ void Ordenar(Inicio* l){
 	/*Os contatos sao ordenados pelo algortimo BubbleSort, de acordo com a escolha do
 	usuario: por nome, email ou telefone. Sao utilizadas funçoes da biblioteca
 	string.h para tornar o codigo menos denso.*/
+	aux = l->prim;
 	if(qual == 1){
 		while(aux!=NULL){
 			p = aux->prox;
@@ -97,20 +115,31 @@ void Ordenar(Inicio* l){
 				}
 				aux = aux->prox;
 			}
-		}		
+		}
 	}/*Fim Bloco Else (qual != 1)*/
 }
 
 void ImprimirTudo(Inicio* l){
 	Agenda* p;
+	int validador;
 
 	printf("\t\tCONTATOS\t\t\n");
-	for(p = l->prim; p != NULL; p = p->prox){
+	if(l->prim == NULL){
+		printf("Sua Lista de contatos esta vazia! Digite 1 se deseja incluir novos contatos.\n");
+		scanf("%d", &validador);
+		if(validador == 1){
+			Inserir(l);
+		}
+	}
+	else{
+		for(p = l->prim; p != NULL; p = p->prox){
 		printf("Nome: %s\n", p->nome);
 		printf("Email: %s\n", p->email);
 		printf("Telefone: %s\n", p->telefone);
 		printf("\n");
-	}	
+		getchar();
+		}
+	}
 }
 
 void ImprimirCTT(Inicio* l){
@@ -129,12 +158,15 @@ void ImprimirCTT(Inicio* l){
 			printf("\t\t%s\t\t\n", p->nome);
 			printf("\t\t%s\t\t\n", p->email);
 			printf("\t\t%s\t\t\n", p->telefone);
+			getchar();
+			j = 1;
 		}
-		j = 1;
+	
 	}
-	if(j==0){
+	if(j==0){ /*NAO PODERIA SER UM ELSE?*/
 		printf("O contato buscado nao existe. Deseja inclui-lo? (S/N)\n");
 		scanf("%c", &validador);
+		getchar();
 		if(validador == 'S' || validador == 's'){
 			Inserir(l);
 		}
@@ -216,12 +248,16 @@ int main(){
 
 	Inicio* l = CriarLista();
 	do{
-		printf("\t\tAGENDA DE CONTATOS\t\t\n");
-		printf("Informe a operaçao que deseja realizar:\n");
-		printf("1 - Inserir novo contato, 2 - Ordenar Lista de Contatos,\n");
-		printf("3 - Imprimir toda Lista de Contatos, 4 - Imprimir Contato\n");
-		printf("especifico, 5 - Editar um contato e 6 - Remover contato.\n");
-		printf("Caso deseja terminar a execuçao, digite 7.\n");
+	    system(CLEAR);
+		printf("\t\tAGENDA DE CONTATOS\t\t\n\n");
+		printf("Informe a operacao que deseja realizar:\n");
+		printf("1 - Inserir novo contato\n");
+		printf("2 - Ordenar Lista de Contatos\n");
+		printf("3 - Imprimir toda a Lista de Contatos\n");
+		printf("4 - Imprimir Contato especifico\n");
+		printf("5 - Editar um contato\n");
+		printf("6 - Remover contato\n");
+		printf("7 - Encerrar programa\n");
 		scanf("%d", &keep);
 		while(keep < 1 || keep > 7){
 			printf("Informe uma opçao valida!\n");
